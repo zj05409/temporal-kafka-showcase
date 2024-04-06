@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: "special-config"
+data:
+  special.slave: "1"
+  special.master: "0"
