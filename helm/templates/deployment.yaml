@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: temporal-kafka-demo
-          image: "thycoder/temporal-kafka-demo:latest"
+          image: "thycoder/temporal-kafka-demo:6.0.0"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           volumeMounts:
             - name: data
@@ -52,7 +52,7 @@ spec:
     spec:
       containers:
         - name: temporal-kafka-demo-with-starter
-          image: "thycoder/temporal-kafka-demo:latest"
+          image: "thycoder/temporal-kafka-demo:6.0.0"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           volumeMounts:
             - name: data

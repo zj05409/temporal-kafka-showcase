@@ -37,7 +37,6 @@ func TestWholeWorkflows(t *testing.T) {
 	env.ExecuteWorkflow(ConsumersWorkflow)
 	assert.True(t, env.IsWorkflowCompleted())
 
-	// env.GetWorkflowResult(&result)
 	error = env.GetWorkflowError()
 
 	require.NoError(t, error)

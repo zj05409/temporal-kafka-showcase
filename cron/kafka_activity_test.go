@@ -8,8 +8,6 @@ import (
 	"go.temporal.io/sdk/testsuite"
 )
 
-//setup go test fixtures
-
 func TestKafkaProducerConsumer(t *testing.T) {
 	testSuite := testsuite.WorkflowTestSuite{}
 	env := testSuite.NewTestActivityEnvironment().SetTestTimeout(120 * time.Second)

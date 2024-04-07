@@ -15,10 +15,9 @@ type CronResult struct {
 	RunTime time.Time
 }
 
-const PRODUCER_COUNT = 200
+const PRODUCER_COUNT = 2
 const CONSUMER_COUNT = 2
 
-// const KAFKA_TOPIC = "kafka_activity_test"
 const KAFKA_TOPIC = "preonline"
 
 // const KAFKA_PROCUCERS = "localhost:9092"
@@ -49,7 +48,7 @@ func InitKafka() *kafka.Conn {
 			log.Fatal("failed to dial leader:", err)
 		}
 	})
-	kafkaWriter.SetWriteDeadline(time.Now().Add(3 * time.Second))
+	// kafkaWriter.SetWriteDeadline(time.Now().Add(10 * time.Second))
 	return kafkaWriter
 }
 func InitKafkaConsumer() *kafka.Reader {

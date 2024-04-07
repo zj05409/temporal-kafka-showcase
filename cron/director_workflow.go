@@ -8,7 +8,6 @@ import (
 )
 
 func ProducersWorkflow(ctx workflow.Context) error {
-	// GetChildWorkflowExecution()
 	return batchExecuteChildWorkflowGroup(ctx, ProducerWorkflow, "producer", PRODUCER_COUNT)
 
 }

@@ -15,22 +15,7 @@ func ProducerActivity(ctx context.Context) error {
 	logger.Info("Producing Message")
 
 	conn := InitKafka()
-	// w := &kafka.Writer{
-	// 	// Addr:     kafka.TCP("localhost:9092", "localhost:9093", "localhost:9094"),
-	// 	Addr:     kafka.TCP("kafka-controller-0.kafka-controller-headless.default.svc.cluster.local:9092","kafka-controller-1.kafka-controller-headless.default.svc.cluster.local:9092",
-	// 		"kafka-controller-2.kafka-controller-headless.default.svc.cluster.local:9092"),
-	// 	Topic:   KAFKA_TOPIC,
-	// 	// Balancer: &kafka.LeastBytes{},
-	// 	// Transport: &kafka.Transport{
-	// 	// 	SASL:mechanism,
-	// 	// },
-	// 	BatchTimeout: 1 * time.Second,
-	// 	BatchSize: 1,
-	// }
-	// defer w.Close()
-	// _, err := w.WriteMessages(context.Background(),
 
-	// defer conn.Close()
 	_, err := conn.WriteMessages(
 		kafka.Message{
 			Key:   []byte("Key-A"),

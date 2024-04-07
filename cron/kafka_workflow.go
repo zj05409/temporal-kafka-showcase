@@ -7,9 +7,7 @@ import (
 	"go.temporal.io/sdk/workflow"
 )
 
-// SampleCronWorkflow executes on the given schedule
-// The schedule is provided when starting the Workflow
-func ProducerWorkflow(ctx workflow.Context) (error) {
+func ProducerWorkflow(ctx workflow.Context) error {
 
 	workflow.GetLogger(ctx).Info("Producer workflow started.", "StartTime", workflow.Now(ctx))
 
@@ -23,9 +21,9 @@ func ProducerWorkflow(ctx workflow.Context) (error) {
 		workflow.GetLogger(ctx).Error("Producer workflow failed.", "Error", err)
 	}
 
-    return err
+	return err
 }
-func ConsumerWorkflow(ctx workflow.Context) (error) {
+func ConsumerWorkflow(ctx workflow.Context) error {
 
 	workflow.GetLogger(ctx).Info("Consumer workflow started.", "StartTime", workflow.Now(ctx))
 
@@ -39,7 +37,5 @@ func ConsumerWorkflow(ctx workflow.Context) (error) {
 		workflow.GetLogger(ctx).Error("Consumer workflow failed.", "Error", err)
 	}
 
-    return err
+	return err
 }
-
-// @@@SNIPEND
