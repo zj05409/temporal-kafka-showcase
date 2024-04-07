@@ -24,8 +24,8 @@ const KAFKA_TOPIC = "preonline"
 // const KAFKA_PROCUCERS = "localhost:9092"
 // const KAFKA_CONSUMERS = "localhost:9092"
 
-const KAFKA_PROCUCERS = "kafka.default.svc.cluster.local:9092"
-const KAFKA_CONSUMERS = "kafka-controller-0.kafka-controller-headless.default.svc.cluster.local:9092,kafka-controller-1.kafka-controller-headless.default.svc.cluster.local:9092,kafka-controller-2.kafka-controller-headless.default.svc.cluster.local:9092"
+const KAFKA_PROCUCERS = "kafka-controller-0.kafka-controller-headless.default.svc.cluster.local:9092"
+const KAFKA_CONSUMERS = "kafka.default.svc.cluster.local:9092"
 const KAFKA_CONSUMER_GROUP = "consumer-group-id"
 
 // const KAFKA_USERNAME = "user1"
@@ -49,7 +49,7 @@ func InitKafka() *kafka.Conn {
 			log.Fatal("failed to dial leader:", err)
 		}
 	})
-	kafkaWriter.SetWriteDeadline(time.Now().Add(30 * time.Second))
+	kafkaWriter.SetWriteDeadline(time.Now().Add(3 * time.Second))
 	return kafkaWriter
 }
 func InitKafkaConsumer() *kafka.Reader {
