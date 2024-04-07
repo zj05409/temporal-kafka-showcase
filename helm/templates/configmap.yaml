@@ -5,3 +5,17 @@ metadata:
 data:
   special.slave: "1"
   special.master: "0"
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-env
+data:
+  .env: |
+    PRODUCER_COUNT={{ .Values.producerCount }}
+    CONSUMER_COUNT={{ .Values.consumerCount }}
+    KAFKA_TOPIC={{ .Values.kafkaTopic }}
+    KAFKA_PROCUCERS={{ .Values.kafkaProducers }}
+    KAFKA_CONSUMERS={{ .Values.kafkaConsumers }}
+    KAFKA_CONSUMER_GROUP={{ .Values.kafkaConsumerGroup }}
+    TEMPORAL_FRONTEND={{ .Values.temporalFrontend }}

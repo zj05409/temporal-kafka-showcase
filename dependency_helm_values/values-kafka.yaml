@@ -87,7 +87,7 @@ diagnosticMode:
 image:
   registry: docker.io
   repository: bitnami/kafka
-  tag: 3.7.0-debian-12-r2
+  tag: 3.7.0
   digest: ""
   ## Specify a imagePullPolicy
   ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
@@ -117,7 +117,9 @@ config: ""
 existingConfigmap: ""
 ## @param extraConfig Additional configuration to be appended at the end of the generated Kafka configuration file.
 ##
-extraConfig: ""
+extraConfig: |
+  num.partitions: 5
+  auto.create.topics.enable: true
 ## @param secretConfig Additional configuration to be appended at the end of the generated Kafka configuration file.
 ## This value will be stored in a secret.
 ##
@@ -164,7 +166,7 @@ listeners:
   controller:
     name: CONTROLLER
     containerPort: 9093
-    protocol: SASL_PLAINTEXT
+    protocol: PLAINTEXT
     sslClientAuth: ""
   ## @param listeners.interbroker.name Name for the Kafka inter-broker listener
   ## @param listeners.interbroker.containerPort Port for the Kafka inter-broker listener
@@ -172,7 +174,7 @@ listeners:
   ## @param listeners.interbroker.sslClientAuth Optional. If SASL_SSL is enabled, configure mTLS TLS authentication type. If SSL protocol is enabled, overrides tls.authType for this listener. Allowed values are 'none', 'requested' and 'required'
   interbroker:
     containerPort: 9094
-    protocol: SASL_PLAINTEXT
+    protocol: PLAINTEXT
     name: INTERNAL
     sslClientAuth: ""
   ## @param listeners.external.containerPort Port for the Kafka external listener
@@ -181,7 +183,7 @@ listeners:
   ## @param listeners.external.sslClientAuth Optional. If SASL_SSL is enabled, configure mTLS TLS authentication type. If SSL protocol is enabled, overrides tls.sslClientAuth for this listener. Allowed values are 'none', 'requested' and 'required'
   external:
     containerPort: 9095
-    protocol: SASL_PLAINTEXT
+    protocol: PLAINTEXT
     name: EXTERNAL
     sslClientAuth: ""
   ## @param listeners.extraListeners Array of listener objects to be appended to already existing listeners
@@ -265,9 +267,9 @@ sasl:
   ## @param sasl.existingSecret Name of the existing secret containing credentials for clientUsers, interBrokerUser, controllerUser and zookeeperUser
   ## Create this secret running the command below where SECRET_NAME is the name of the secret you want to create:
   ##       kubectl create secret generic SECRET_NAME --from-literal=client-passwords=CLIENT_PASSWORD1,CLIENT_PASSWORD2 --from-literal=inter-broker-password=INTER_BROKER_PASSWORD --from-literal=inter-broker-client-secret=INTER_BROKER_CLIENT_SECRET --from-literal=controller-password=CONTROLLER_PASSWORD --from-literal=controller-client-secret=CONTROLLER_CLIENT_SECRET --from-literal=zookeeper-password=ZOOKEEPER_PASSWORD
-  ## The client secrets are only required when using oauthbearer as sasl mechanism. 
+  ## The client secrets are only required when using oauthbearer as sasl mechanism.
   ## Client, interbroker and controller passwords are only required if the sasl mechanism includes something other than oauthbearer.
-  ## 
+  ##
   existingSecret: ""
 ## @section Kafka TLS parameters
 ## Kafka TLS settings, required if SSL or SASL_SSL listeners are configured
@@ -471,7 +473,7 @@ controller:
   ## @param controller.replicaCount Number of Kafka controller-eligible nodes
   ## Ignore this section if running in Zookeeper mode.
   ##
-  replicaCount: 1
+  replicaCount: 5
   ## @param controller.controllerOnly If set to true, controller nodes will be deployed as dedicated controllers, instead of controller+broker processes.
   ##
   controllerOnly: false
@@ -1440,7 +1442,7 @@ externalAccess:
     ## @param externalAccess.autoDiscovery.containerSecurityContext.allowPrivilegeEscalation Set Kafka auto-discovery containers' Security Context allowPrivilegeEscalation
     ## @param externalAccess.autoDiscovery.containerSecurityContext.readOnlyRootFilesystem Set Kafka auto-discovery containers' Security Context readOnlyRootFilesystem
     ## @param externalAccess.autoDiscovery.containerSecurityContext.capabilities.drop Set Kafka auto-discovery containers' Security Context capabilities to be dropped
-    ## @param externalAccess.autoDiscovery.containerSecurityContext.seccompProfile.type Set Kafka auto-discovery seccomp profile type 
+    ## @param externalAccess.autoDiscovery.containerSecurityContext.seccompProfile.type Set Kafka auto-discovery seccomp profile type
     ## e.g:
     ##   containerSecurityContext:
     ##     enabled: true
@@ -1471,7 +1473,8 @@ externalAccess:
     service:
       ## @param externalAccess.controller.service.type Kubernetes Service type for external access. It can be NodePort, LoadBalancer or ClusterIP
       ##
-      type: LoadBalancer
+      # type: LoadBalancer
+      type: NodePort
       ## @param externalAccess.controller.service.ports.external Kafka port used for external access when service type is LoadBalancer
       ##
       ports:
@@ -1483,6 +1486,8 @@ externalAccess:
       ##   - Y.Y.Y.Y
       ##
       loadBalancerIPs: []
+      # loadBalancerIPs:
+
       ## @param externalAccess.controller.service.loadBalancerNames Array of load balancer Names for each Kafka broker. Length must be the same as replicaCount
       ## e.g:
       ## loadBalancerNames:
@@ -1510,21 +1515,30 @@ externalAccess:
       allocateLoadBalancerNodePorts: true
       ## @param externalAccess.controller.service.nodePorts Array of node ports used for each Kafka broker. Length must be the same as replicaCount
       ## e.g:
-      ## nodePorts:
-      ##   - 30001
-      ##   - 30002
-      ##
-      nodePorts: []
+      # nodePorts:
+      #   - 30003
+      #   - 30004
+      #   - 30005
+      #   - 30006
+      #   - 30007
+
+      # nodePorts: []
       ## @param externalAccess.controller.service.externalIPs Use distinct service host IPs to configure Kafka external listener when service type is NodePort. Length must be the same as replicaCount
       ## e.g:
       ## externalIPs:
       ##   - X.X.X.X
       ##   - Y.Y.Y.Y
       ##
-      externalIPs: []
+      # externalIPs:
+      # externalIPs:
+      #   - 192.168.50.213
+      #   - 192.168.50.214
+      #   - 192.168.50.215
+      #   - 192.168.50.216
+      #   - 192.168.50.217
       ## @param externalAccess.controller.service.useHostIPs Use service host IPs to configure Kafka external listener when service type is NodePort
       ##
-      useHostIPs: false
+      useHostIPs: true
       ## @param externalAccess.controller.service.usePodIPs using the MY_POD_IP address for external access.
       ##
       usePodIPs: false
@@ -1554,6 +1568,7 @@ externalAccess:
       ## @param externalAccess.broker.service.type Kubernetes Service type for external access. It can be NodePort, LoadBalancer or ClusterIP
       ##
       type: LoadBalancer
+      # type: NodePort
       ## @param externalAccess.broker.service.ports.external Kafka port used for external access when service type is LoadBalancer
       ##
       ports:

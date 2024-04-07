@@ -5,7 +5,7 @@ metadata:
   labels:
     app: temporal-kafka-demo
 spec:
-  replicas: {{ .Values.workerWithoutStarterCount }}
+  replicas: { { .Values.workerWithoutStarterCount } }
   selector:
     matchLabels:
       app: temporal-kafka-demo
@@ -16,11 +16,14 @@ spec:
     spec:
       containers:
         - name: temporal-kafka-demo
-          image: "thycoder/temporal-kafka-demo:6.0.0"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          image: "thycoder/temporal-kafka-demo:latest"
+          imagePullPolicy: { { .Values.image.pullPolicy } }
           volumeMounts:
             - name: data
               mountPath: /opt
+            - name: env
+              mountPath: /app/.env
+              subPath: .env
           env:
             # Define the environment variable
             - name: SHOULD_START_WORKFLOWS
@@ -33,6 +36,9 @@ spec:
       volumes:
         - name: data
           emptyDir: {}
+        - name: env
+          configMap:
+            name: temporal-kafka-demo-env
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -41,7 +47,7 @@ metadata:
   labels:
     app: temporal-kafka-demo-with-starter
 spec:
-  replicas: {{ .Values.workerWithStarterCount }}
+  replicas: { { .Values.workerWithStarterCount } }
   selector:
     matchLabels:
       app: temporal-kafka-demo-with-starter
@@ -52,8 +58,8 @@ spec:
     spec:
       containers:
         - name: temporal-kafka-demo-with-starter
-          image: "thycoder/temporal-kafka-demo:6.0.0"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          image: "thycoder/temporal-kafka-demo:latest"
+          imagePullPolicy: { { .Values.image.pullPolicy } }
           volumeMounts:
             - name: data
               mountPath: /opt

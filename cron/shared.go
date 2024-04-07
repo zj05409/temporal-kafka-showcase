@@ -3,10 +3,12 @@ package cron
 import (
 	"context"
 	"log"
+	"os"
 	"strings"
 	"sync"
 	"time"
 
+	"github.com/joho/godotenv"
 	"github.com/segmentio/kafka-go"
 )
 
@@ -15,35 +17,39 @@ type CronResult struct {
 	RunTime time.Time
 }
 
-const PRODUCER_COUNT = 2
-const CONSUMER_COUNT = 2
-
-const KAFKA_TOPIC = "preonline"
-
-// const KAFKA_PROCUCERS = "localhost:9092"
-// const KAFKA_CONSUMERS = "localhost:9092"
-
-const KAFKA_PROCUCERS = "kafka-controller-0.kafka-controller-headless.default.svc.cluster.local:9092"
-const KAFKA_CONSUMERS = "kafka.default.svc.cluster.local:9092"
-const KAFKA_CONSUMER_GROUP = "consumer-group-id"
-
-// const KAFKA_USERNAME = "user1"
-// const KAFKA_PASSWORD = "nyo0WH8B78"
-
-const TEMPORAL_FRONTEND = "temporaltest-frontend.default.svc.cluster.local:7233"
-
 var (
-	procucerOnce sync.Once
-	kafkaWriter  *kafka.Conn
-
+    producerCount      = getEnv("PRODUCER_COUNT", "20")
+    consumerCount      = getEnv("CONSUMER_COUNT", "2")
+    kafkaTopic         = getEnv("KAFKA_TOPIC", "preonline")
+    kafkaProducers     = getEnv("KAFKA_PRODUCERS", "kafka.kafka.svc.cluster.local:9092")
+    kafkaConsumers     = getEnv("KAFKA_CONSUMERS", "kafka.kafka.svc.cluster.local:9092")
+    kafkaConsumerGroup = getEnv("KAFKA_CONSUMER_GROUP", "consumer-group-id")
+    temporalFrontend   = getEnv("TEMPORAL_FRONTEND", "temporaltest-frontend.default.svc.cluster.local:7233")
+    producerOnce       sync.Once
+    kafkaWriter        *kafka.Conn
 	consumerOnce sync.Once
 	kafkaReader  *kafka.Reader
 )
 
+func init() {
+    err := godotenv.Load()
+    if err != nil {
+        log.Fatal("Error loading .env file")
+    }
+}
+
+func getEnv(key, defaultValue string) string {
+    value, exists := os.LookupEnv(key)
+    if !exists {
+        value = defaultValue
+    }
+    return value
+}
+
 func InitKafka() *kafka.Conn {
-	procucerOnce.Do(func() {
+	producerOnce.Do(func() {
 		var err error
-		kafkaWriter, err = kafka.DialLeader(context.Background(), "tcp", KAFKA_PROCUCERS, KAFKA_TOPIC, 0)
+		kafkaWriter, err = kafka.DialLeader(context.Background(), "tcp", kafkaProducers, kafkaTopic, 0)
 		if err != nil {
 			log.Fatal("failed to dial leader:", err)
 		}
@@ -59,9 +65,9 @@ func InitKafkaConsumer() *kafka.Reader {
 		}
 
 		kafkaReader = kafka.NewReader(kafka.ReaderConfig{
-			Brokers:          strings.Split(KAFKA_CONSUMERS, ","),
-			GroupID:          KAFKA_CONSUMER_GROUP,
-			Topic:            KAFKA_TOPIC,
+			Brokers:          strings.Split(kafkaConsumers, ","),
+			GroupID:          kafkaConsumerGroup,
+			Topic:            kafkaTopic,
 			MaxBytes:         10e6, // 10MB
 			MaxWait:          1 * time.Second,
 			ReadBatchTimeout: 1 * time.Second,
