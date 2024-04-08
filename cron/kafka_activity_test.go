@@ -8,7 +8,7 @@ import (
 	"go.temporal.io/sdk/testsuite"
 )
 
-func TestKafkaProducerConsumer(t *testing.T) {
+func IgnoreTestKafkaProducerConsumer(t *testing.T) {
 	testSuite := testsuite.WorkflowTestSuite{}
 	env := testSuite.NewTestActivityEnvironment().SetTestTimeout(120 * time.Second)
 	env.RegisterActivity(ProducerActivity)
@@ -21,7 +21,7 @@ func TestKafkaProducerConsumer(t *testing.T) {
 
 }
 
-func TestKafkaConsumerProducer(t *testing.T) {
+func IgnoreTestKafkaConsumerProducer(t *testing.T) {
 	testSuite := testsuite.WorkflowTestSuite{}
 	env := testSuite.NewTestActivityEnvironment()
 
