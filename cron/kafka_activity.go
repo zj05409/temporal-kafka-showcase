@@ -42,6 +42,7 @@ func ConsumerActivity(ctx context.Context) error {
 	logger := activity.GetLogger(ctx)
 	logger.Info("Consuming Message")
 	r := InitKafkaConsumer()
+	defer r.Close()
 
 	var m kafka.Message
 	var err error

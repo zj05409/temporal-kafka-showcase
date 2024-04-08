@@ -2,7 +2,7 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 producerCount: 200
-consumerCount: 5
+consumerCount: 2
 kafkaTopic: preonline
 kafkaProducers: kafka.kafka.svc.cluster.local:9092
 kafkaConsumers: kafka.kafka.svc.cluster.local:9092

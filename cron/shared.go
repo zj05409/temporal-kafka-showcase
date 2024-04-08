@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"log"
-	"os"
 	"strings"
 	"sync"
 	"time"
@@ -22,7 +21,6 @@ type CronResult struct {
 var (
 	producerOnce       sync.Once
     kafkaWriter        *kafka.Conn
-	consumerOnce sync.Once
 	kafkaReader  *kafka.Reader
 	Configs Config
 )
@@ -51,14 +49,6 @@ func init() {
 	log.Fatal("Error loading .env file")
 }
 
-func getEnv(key, defaultValue string) string {
-    value, exists := os.LookupEnv(key)
-    if !exists {
-        value = defaultValue
-    }
-    return value
-}
-
 func InitKafka() *kafka.Conn {
 	producerOnce.Do(func() {
 		var err error
@@ -71,22 +61,19 @@ func InitKafka() *kafka.Conn {
 	return kafkaWriter
 }
 func InitKafkaConsumer() *kafka.Reader {
-	consumerOnce.Do(func() {
 
-		dialer := &kafka.Dialer{
-			Timeout: 120 * time.Second,
-		}
+	dialer := &kafka.Dialer{
+		Timeout: 120 * time.Second,
+	}
 
-		kafkaReader = kafka.NewReader(kafka.ReaderConfig{
-			Brokers:          strings.Split(Configs.KafkaConsumers, ","),
-			GroupID:          Configs.KafkaConsumerGroup,
-			Topic:            Configs.KafkaTopic,
-			MaxBytes:         10e6, // 10MB
-			MaxWait:          1 * time.Second,
-			ReadBatchTimeout: 1 * time.Second,
-			Dialer:           dialer,
-		})
-
+	kafkaReader = kafka.NewReader(kafka.ReaderConfig{
+		Brokers:          strings.Split(Configs.KafkaConsumers, ","),
+		GroupID:          Configs.KafkaConsumerGroup,
+		Topic:            Configs.KafkaTopic,
+		MaxBytes:         10e6, // 10MB
+		MaxWait:          1 * time.Second,
+		ReadBatchTimeout: 1 * time.Second,
+		Dialer:           dialer,
 	})
 	return kafkaReader
 }
