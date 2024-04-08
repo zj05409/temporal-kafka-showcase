@@ -5,7 +5,7 @@ metadata:
   labels:
     app: temporal-kafka-demo
 spec:
-  replicas: { { .Values.workerWithoutStarterCount } }
+  replicas: {{ .Values.workerWithoutStarterCount }}
   selector:
     matchLabels:
       app: temporal-kafka-demo
@@ -17,7 +17,7 @@ spec:
       containers:
         - name: temporal-kafka-demo
           image: "thycoder/temporal-kafka-demo:latest"
-          imagePullPolicy: { { .Values.image.pullPolicy } }
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
           volumeMounts:
             - name: data
               mountPath: /opt
@@ -47,7 +47,7 @@ metadata:
   labels:
     app: temporal-kafka-demo-with-starter
 spec:
-  replicas: { { .Values.workerWithStarterCount } }
+  replicas: {{ .Values.workerWithStarterCount }}
   selector:
     matchLabels:
       app: temporal-kafka-demo-with-starter
@@ -59,7 +59,7 @@ spec:
       containers:
         - name: temporal-kafka-demo-with-starter
           image: "thycoder/temporal-kafka-demo:latest"
-          imagePullPolicy: { { .Values.image.pullPolicy } }
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
           volumeMounts:
             - name: data
               mountPath: /opt
@@ -75,3 +75,4 @@ spec:
       volumes:
         - name: data
           emptyDir: {}
+
