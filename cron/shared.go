@@ -43,10 +43,12 @@ func init() {
 	cfg := Config{}
 	if err := env.Parse(&cfg); err != nil {
 		fmt.Printf("%+v\n", err)
+		log.Fatal("Error parsing .env file")
+	} else {
+		Configs = cfg
 	}
 
 	fmt.Printf("%+v\n", cfg)
-	log.Fatal("Error loading .env file")
 }
 
 func InitKafka() *kafka.Conn {
