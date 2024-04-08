@@ -50,16 +50,30 @@ func init() {
 	fmt.Printf("%+v\n", cfg)
 }
 
-func InitKafka() *kafka.Conn {
+var (
+	kafkaWriterPool *sync.Pool
+)
+
+func InitKafka() {
 	producerOnce.Do(func() {
-		var err error
-		kafkaWriter, err = kafka.DialLeader(context.Background(), "tcp", Configs.KafkaProducers, Configs.KafkaTopic, 0)
-		if err != nil {
-			log.Fatal("failed to dial leader:", err)
+		kafkaWriterPool = &sync.Pool{
+			New: func() interface{} {
+				kafkaWriter, err := kafka.DialLeader(context.Background(), "tcp", Configs.KafkaProducers, Configs.KafkaTopic, 0)
+				if err != nil {
+					log.Fatal("failed to dial leader:", err)
+				}
+				return kafkaWriter
+			},
 		}
 	})
-	// kafkaWriter.SetWriteDeadline(time.Now().Add(10 * time.Second))
-	return kafkaWriter
+}
+
+func GetKafkaWriter() *kafka.Conn {
+	return kafkaWriterPool.Get().(*kafka.Conn)
+}
+
+func ReturnKafkaWriter(conn *kafka.Conn) {
+	kafkaWriterPool.Put(conn)
 }
 func InitKafkaConsumer() *kafka.Reader {
 

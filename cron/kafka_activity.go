@@ -14,20 +14,13 @@ func ProducerActivity(ctx context.Context) error {
 	logger := activity.GetLogger(ctx)
 	logger.Info("Producing Message")
 
-	conn := InitKafka()
+	conn := GetKafkaWriter()
+	defer ReturnKafkaWriter(conn)
 
 	_, err := conn.WriteMessages(
 		kafka.Message{
 			Key:   []byte("Key-A"),
 			Value: []byte("Hello World!"),
-		},
-		kafka.Message{
-			Key:   []byte("Key-B"),
-			Value: []byte("One!"),
-		},
-		kafka.Message{
-			Key:   []byte("Key-C"),
-			Value: []byte("Two!"),
 		},
 	)
 	if err != nil {
