@@ -4,6 +4,6 @@ else
     if [ "$SHOULD_START_WORKFLOWS" = "1" ]; then
         ./starter_main && ./worker_main
     else
-        ./starter_main
+        ./worker_main
     fi  
 fi
