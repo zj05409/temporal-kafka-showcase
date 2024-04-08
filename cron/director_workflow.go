@@ -8,12 +8,12 @@ import (
 )
 
 func ProducersWorkflow(ctx workflow.Context) error {
-	return batchExecuteChildWorkflowGroup(ctx, ProducerWorkflow, "producer", PRODUCER_COUNT)
+	return batchExecuteChildWorkflowGroup(ctx, ProducerWorkflow, "producer", Configs.ProducerCount)
 
 }
 func ConsumersWorkflow(ctx workflow.Context) error {
 	// GetChildWorkflowExecution()
-	return batchExecuteChildWorkflowGroup(ctx, ConsumerWorkflow, "consumer", CONSUMER_COUNT)
+	return batchExecuteChildWorkflowGroup(ctx, ConsumerWorkflow, "consumer", Configs.ConsumerCount)
 }
 
 func batchExecuteChildWorkflowGroup(ctx workflow.Context, childWorkflow interface{}, childName string, childCount int) error {

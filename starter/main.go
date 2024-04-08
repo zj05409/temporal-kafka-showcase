@@ -13,9 +13,10 @@ import (
 
 func main() {
 	// The client is a heavyweight object that should be created once per process.
+
 	c, err := client.Dial(client.Options{
 		// HostPort: client.DefaultHostPort,
-		HostPort: cron.TEMPORAL_FRONTEND,
+		HostPort: cron.Configs.TemporalFrontend,
 	})
 	if err != nil {
 		log.Fatalln("Unable to create client", err)

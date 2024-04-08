@@ -4,12 +4,14 @@ go 1.22.1
 
 require (
 	github.com/segmentio/kafka-go v0.4.47
+	github.com/joho/godotenv v1.5.1
 	github.com/stretchr/testify v1.9.0
 	go.temporal.io/api v1.29.1
 	go.temporal.io/sdk v1.26.0
 )
 
 require (
+	github.com/caarlos0/env/v10 v10.0.0
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/facebookgo/clock v0.0.0-20150410010913-600d898af40a // indirect
 	github.com/gogo/protobuf v1.3.2 // indirect
@@ -18,7 +20,6 @@ require (
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/grpc-ecosystem/go-grpc-middleware v1.3.0 // indirect
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.19.1 // indirect
-	github.com/joho/godotenv v1.5.1 // indirect
 	github.com/klauspost/compress v1.17.7 // indirect
 	github.com/pborman/uuid v1.2.1 // indirect
 	github.com/pierrec/lz4/v4 v4.1.21 // indirect
