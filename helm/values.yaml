@@ -4,8 +4,8 @@
 producerCount: 200
 consumerCount: 2
 kafkaTopic: preonline
-kafkaProducers: kafka.kafka.svc.cluster.local:9092
-kafkaConsumers: kafka.kafka.svc.cluster.local:9092
+kafkaProducers: kafka.default.svc.cluster.local:9092
+kafkaConsumers: kafka.default.svc.cluster.local:9092
 kafkaConsumerGroup: consumer-group-id
 temporalFrontend: temporaltest-frontend.default.svc.cluster.local:7233
 

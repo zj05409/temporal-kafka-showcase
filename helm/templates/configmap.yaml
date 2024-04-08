@@ -15,7 +15,7 @@ data:
     PRODUCER_COUNT={{ .Values.producerCount }}
     CONSUMER_COUNT={{ .Values.consumerCount }}
     KAFKA_TOPIC={{ .Values.kafkaTopic }}
-    KAFKA_PROCUCERS={{ .Values.kafkaProducers }}
+    KAFKA_PRODUCERS={{ .Values.kafkaProducers }}
     KAFKA_CONSUMERS={{ .Values.kafkaConsumers }}
     KAFKA_CONSUMER_GROUP={{ .Values.kafkaConsumerGroup }}
     TEMPORAL_FRONTEND={{ .Values.temporalFrontend }}

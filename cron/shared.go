@@ -28,7 +28,7 @@ type Config struct {
 	ProducerCount         int         	 `env:"PRODUCER_COUNT,required"`
 	ConsumerCount         int            `env:"CONSUMER_COUNT,required"`
 	KafkaTopic            string         `env:"KAFKA_TOPIC,required"`
-	KafkaProducers        string         `env:"KAFKA_PRODUCERS"`
+	KafkaProducers        string         `env:"KAFKA_PRODUCERS,required"`
 	KafkaConsumers        string         `env:"KAFKA_CONSUMERS,required"`
 	KafkaConsumerGroup    string         `env:"KAFKA_CONSUMER_GROUP,required"`
 	TemporalFrontend      string         `env:"TEMPORAL_FRONTEND,required"`
