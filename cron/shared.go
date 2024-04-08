@@ -37,13 +37,12 @@ type Config struct {
 func init() {
     err := godotenv.Load()
     if err != nil {
-        log.Fatal("Error loading .env file")
+        log.Fatal("Error loading .env file", err)
     }
 	
 	cfg := Config{}
 	if err := env.Parse(&cfg); err != nil {
-		fmt.Printf("%+v\n", err)
-		log.Fatal("Error parsing .env file")
+		log.Fatal("Error parsing .env file", err)
 	} else {
 		Configs = cfg
 	}
