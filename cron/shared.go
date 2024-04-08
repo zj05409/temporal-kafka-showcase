@@ -54,7 +54,7 @@ var (
 	kafkaWriterPool *sync.Pool
 )
 
-func InitKafka() {
+func InitKafka() *sync.Pool{
 	producerOnce.Do(func() {
 		kafkaWriterPool = &sync.Pool{
 			New: func() interface{} {
@@ -66,6 +66,7 @@ func InitKafka() {
 			},
 		}
 	})
+	return kafkaWriterPool
 }
 
 func GetKafkaWriter() *kafka.Conn {

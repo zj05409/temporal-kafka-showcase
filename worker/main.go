@@ -9,12 +9,11 @@ import (
 )
 
 func main() {
+	cron.InitKafka()
+	//TODO close the pool returned
 
-	connection := cron.InitKafka()
-	defer connection.Close()
-
-	reader := cron.InitKafkaConsumer()
-	defer reader.Close()
+	// reader := cron.InitKafkaConsumer()
+	// defer reader.Close()
 
 	// The client and worker are heavyweight objects that should be created once per process.
 	c, err := client.Dial(client.Options{
