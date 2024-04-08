@@ -14,7 +14,7 @@ workerWithoutStarterCount: 4
 workerWithStarterCount: 1
 
 image:
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
   tag: "latest"
 
 autoscaling:
