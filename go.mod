@@ -3,12 +3,14 @@ module zj05409.github.com/temporal_demo
 go 1.22.1
 
 require (
-	github.com/segmentio/kafka-go v0.4.47
 	github.com/joho/godotenv v1.5.1
+	github.com/segmentio/kafka-go v0.4.47
 	github.com/stretchr/testify v1.9.0
 	go.temporal.io/api v1.29.1
 	go.temporal.io/sdk v1.26.0
 )
+
+require github.com/go-baa/pool v1.1.0 // indirect
 
 require (
 	github.com/caarlos0/env/v10 v10.0.0
